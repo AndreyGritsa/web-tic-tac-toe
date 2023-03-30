@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+ <div class="game">
+     <h1>Choose you side</h1>
+     <form action="" name="side" method="POST">
+         <label><input type="radio" name="radio" value="X" required>X</label>
+         <label><input type="radio" name="radio" value="O" required>O</label>
+         <button type="submit">Submit</button>
+     </form>
+     {% if session["side"] %}
+     <h3>Your side is: {{ session["side"] }}</h3>
+     {% else %}
+     <h3>Your side is: Not Chosen</h3>
+     {% endif %}
+     <table>
+         <tr>
+             <td><form name="but1" method="POST"><button type="submit" class="game-but" name="game_but11">{{ session["button11"] }}</button></form></td>
+             <td><form name="but2" method="POST"><button class="game-but" type="submit" name="game_but12">{{ session["button12"] }}</button></form></td>
+             <td><button class="game-but" name="game_but13"></button></td>
+         </tr>
+         <tr>
+             <td><button class="game-but"></button></td>
+             <td><button class="game-but"></button></td>
+             <td><button class="game-but"></button></td>
+         </tr>
+         <tr>
+             <td><button class="game-but"></button></td>
+             <td><button class="game-but"></button></td>
+             <td><button class="game-but"></button></td>
+         </tr>
+     </table>
+
+     <form name="restart" method="POST">
+         <button type="submit" name="restart">Restart</button>
+     </form>
+
+     {% with messages = get_flashed_messages() %}
+     {% if messages %}
+     <ul class=flashes>
+         {% for message in messages %}
+         <li>{{ message }}</li>
+         {% endfor %}
+     </ul>
+     {% endif %}
+     {% endwith %}
+
+
+</body>
+</html>
