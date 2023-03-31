@@ -1,10 +1,8 @@
-import sys, os
-import pyautogui
 import random
 
 class Game:
 
-    def __init__(self, side):
+    def __init__(self, side, dif):
         self.symbols = {
             11: " ",
             12: " ",
@@ -29,6 +27,10 @@ class Game:
         self.platform = "pycharm"
         self.side = side
         self.ai_side = ""
+        self.ai_go = ""
+        self.is_game = True
+        self.draw = False
+        self.dif = dif
 
     def game_situation_update(self):
         # if self.platform == "pycharm":
@@ -57,22 +59,30 @@ class Game:
         else:
             self.ai_side = "X"
 
-        is_game = self.check_win()
-        while is_game:
-            if self.side == "X" or self.side == "O":
-                self.location()
-                draw = self.check_draw()
-                if draw:
-                    self.game_situation_update()
-                    is_game = False
-                    print("DRAW")
+        self.is_game = self.check_win()
+        # while self.is_game:
+        # if self.side == "X" or self.side == "O":
+            # self.location()
+        if self.is_game:
+
+            draw = self.check_draw()
+            if draw:
+                self.game_situation_update()
+                self.is_game = False
+                self.draw = True
+                return False
+            else:
+                if self.dif == "very_easy":
+                    self.ai_step_very_easy()
                 else:
                     self.ai_step()
-                    self.game_situation_update()
-                    is_game = self.check_win()
-            else:
-                print("Only X and O are available, try again!")
-                self.run()
+                self.game_situation_update()
+                self.is_game = self.check_win()
+        else:
+            return False
+        # else:
+        #     print("Only X and O are available, try again!")
+        #     self.run()
 
     # check every step if there is a winner
     def check_win(self):
@@ -129,11 +139,17 @@ class Game:
 
     # -------- AI LOGIC --------
 
+    def ai_step_very_easy(self):
+        free_spot = [key for key in self.symbols if self.symbols[key] == " "]
+        self.ai_go = random.choice(free_spot)
+        if free_spot:
+            self.symbols[self.ai_go] = self.ai_side
+
     def ai_step(self):
         free_spot = [key for key in self.symbols if self.symbols[key] == " "]
         # first go to the center
         if self.symbols[22] == " ":
-            ai_go = 22
+            self.ai_go = 22
             count = "1"
         else:
             # occupied = [key for key in self.symbols if self.symbols[key] == f"{self.side}"]
@@ -143,16 +159,16 @@ class Game:
                 check_for_ai = [value for value in tup if self.symbols[value] == f"{self.ai_side}"]
                 if len(count) == 1 and not check_for_ai:
                     # self.symbols[count[0]] = self.ai_side
-                    ai_go = count[0]
+                    self.ai_go = count[0]
                     break
                 else:
                     count = "long"
 
         print(f"count: {count}")
         if len(count) > 1:
-            ai_go = random.choice(free_spot)
+            self.ai_go = random.choice(free_spot)
 
         if free_spot:
-            self.symbols[ai_go] = self.ai_side
+            self.symbols[self.ai_go] = self.ai_side
 
 
