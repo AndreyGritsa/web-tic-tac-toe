@@ -8,6 +8,15 @@ app = Flask(__name__)
 app.secret_key = "asdaqwe123asd1239ua0s8hdub298baosubd 19280"
 
 
+def clean_ses():
+    for key in list(session.keys()):
+        if "button" in key:
+            session.pop(key)
+
+def update_score():
+
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
 
@@ -15,7 +24,8 @@ def index():
         global game
         session["side"] = request.form["radio"]
         game = Game(session["side"], request.form["dific"])
-
+        session["x_points"] = game.x_points
+        session["o_points"] = game.o_points
 
     if "restart" in request.form:
         for key in list(session.keys()):
@@ -28,7 +38,7 @@ def index():
         if not game.is_game and game.draw:
             return "DRAW"
         elif not game.is_game:
-            return "Game over"
+            return f"Here's is our winner, congratulations to {game.winner}"
         else:
             session[f"button{game.ai_go}"] = game.ai_side
     elif "game_but11" in request.form and "button11" not in session and "side" not in session:
@@ -42,7 +52,7 @@ def index():
         if not game.is_game and game.draw:
             return "DRAW"
         elif not game.is_game:
-            return "Game over"
+            return f"Here's is our winner, congratulations to {game.winner}"
         else:
             session[f"button{game.ai_go}"] = game.ai_side
     elif "game_but12" in request.form and "button12" not in session and "side" not in session:
@@ -56,7 +66,7 @@ def index():
         if not game.is_game and game.draw:
             return "DRAW"
         elif not game.is_game:
-            return "Game over"
+            return f"Here's is our winner, congratulations to {game.winner}"
         else:
             session[f"button{game.ai_go}"] = game.ai_side
     elif "game_but13" in request.form and "button13" not in session and "side" not in session:
@@ -70,7 +80,7 @@ def index():
         if not game.is_game and game.draw:
             return "DRAW"
         elif not game.is_game:
-            return "Game over"
+            return f"Here's is our winner, congratulations to {game.winner}"
         else:
             session[f"button{game.ai_go}"] = game.ai_side
     elif "game_but21" in request.form and "button21" not in session and "side" not in session:
@@ -84,7 +94,7 @@ def index():
         if not game.is_game and game.draw:
             return "DRAW"
         elif not game.is_game:
-            return "Game over"
+            return f"Here's is our winner, congratulations to {game.winner}"
         else:
             session[f"button{game.ai_go}"] = game.ai_side
     elif "game_but22" in request.form and "button22" not in session and "side" not in session:
@@ -98,7 +108,7 @@ def index():
         if not game.is_game and game.draw:
             return "DRAW"
         elif not game.is_game:
-            return "Game over"
+            return f"Here's is our winner, congratulations to {game.winner}"
         else:
             session[f"button{game.ai_go}"] = game.ai_side
     elif "game_but23" in request.form and "button23" not in session and "side" not in session:
@@ -112,7 +122,7 @@ def index():
         if not game.is_game and game.draw:
             return "DRAW"
         elif not game.is_game:
-            return "Game over"
+            return f"Here's is our winner, congratulations to {game.winner}"
         else:
             session[f"button{game.ai_go}"] = game.ai_side
     elif "game_but31" in request.form and "button31" not in session and "side" not in session:
@@ -126,7 +136,7 @@ def index():
         if not game.is_game and game.draw:
             return "DRAW"
         elif not game.is_game:
-            return "Game over"
+            return f"Here's is our winner, congratulations to {game.winner}"
         else:
             session[f"button{game.ai_go}"] = game.ai_side
     elif "game_but32" in request.form and "button32" not in session and "side" not in session:
@@ -140,13 +150,11 @@ def index():
         if not game.is_game and game.draw:
             return "DRAW"
         elif not game.is_game:
-            return "Game over"
+            return f"Here's is our winner, congratulations to {game.winner}"
         else:
             session[f"button{game.ai_go}"] = game.ai_side
     elif "game_but33" in request.form and "button33" not in session and "side" not in session:
         flash("You haven't chosen the side.")
-
-
 
     print(request.form)
 

@@ -24,20 +24,17 @@ class Game:
             (13, 22, 31),
             (11, 22, 33)
         )
-        self.platform = "pycharm"
         self.side = side
         self.ai_side = ""
         self.ai_go = ""
         self.is_game = True
         self.draw = False
         self.dif = dif
+        self.winner = ""
+        self.x_points = 0
+        self.o_points = 0
 
     def game_situation_update(self):
-        # if self.platform == "pycharm":
-        #     pyautogui.click(591, 797)
-        #     pyautogui.hotkey("ctrl", "alt", "g")
-        # else:
-        #     self.clean_terminal()
         game_sit = f"""
                     {self.symbols[11]}|{self.symbols[12]}|{self.symbols[13]}
                      -----
@@ -50,8 +47,6 @@ class Game:
 
     # main engine
     def run(self):
-        # self.side = input("Choose your side, 'X' or 'O': ")
-        # self.side = self.side.title()
 
         # ai side
         if self.side == "X":
@@ -60,8 +55,7 @@ class Game:
             self.ai_side = "X"
 
         self.is_game = self.check_win()
-        # while self.is_game:
-        # if self.side == "X" or self.side == "O":
+
             # self.location()
         if self.is_game:
 
@@ -80,9 +74,6 @@ class Game:
                 self.is_game = self.check_win()
         else:
             return False
-        # else:
-        #     print("Only X and O are available, try again!")
-        #     self.run()
 
     # check every step if there is a winner
     def check_win(self):
@@ -90,9 +81,13 @@ class Game:
             for_check = f"{self.symbols[tup[0]]}{self.symbols[tup[1]]}{self.symbols[tup[2]]}"
             if for_check == "XXX":
                 print("Here's is our winner, congratulations to X!")
+                self.winner = "X"
+                self.x_points += 1
                 return False
             elif for_check == "OOO":
                 print("Here's is our winner, congratulations to O!")
+                self.winner = "O"
+                self.o_points += 1
                 return False
         return True
 
@@ -130,13 +125,6 @@ class Game:
             print("Line should be from 1 to 3, try again.")
             self.location()
 
-    # clean terminal, should work on windows, mac and linux
-    def clean_terminal(self):
-        if sys.platform == "win32":
-            os.system("cls")
-        else:
-            os.system("clean")
-
     # -------- AI LOGIC --------
 
     def ai_step_very_easy(self):
@@ -152,13 +140,11 @@ class Game:
             self.ai_go = 22
             count = "1"
         else:
-            # occupied = [key for key in self.symbols if self.symbols[key] == f"{self.side}"]
             for tup in self.winning_positions:
                 count = [value for value in tup if self.symbols[value] != f"{self.side}" and
                          (self.symbols[value] == " ")]
                 check_for_ai = [value for value in tup if self.symbols[value] == f"{self.ai_side}"]
                 if len(count) == 1 and not check_for_ai:
-                    # self.symbols[count[0]] = self.ai_side
                     self.ai_go = count[0]
                     break
                 else:
