@@ -1,5 +1,6 @@
 import random
 
+
 class Game:
 
     def __init__(self, side, dif):
@@ -14,6 +15,7 @@ class Game:
             32: " ",
             33: " ",
         }
+        self.symbols_last_game = dict
         self.winning_positions = (
             (11, 12, 13),
             (21, 22, 23),
@@ -55,8 +57,6 @@ class Game:
             self.ai_side = "X"
 
         self.is_game = self.check_win()
-
-            # self.location()
         if self.is_game:
 
             draw = self.check_draw()
@@ -64,6 +64,7 @@ class Game:
                 self.game_situation_update()
                 self.is_game = False
                 self.draw = True
+                # self.symbols_last_game = self.symbols
                 return False
             else:
                 if self.dif == "very_easy":
@@ -83,17 +84,19 @@ class Game:
                 print("Here's is our winner, congratulations to X!")
                 self.winner = "X"
                 self.x_points += 1
+                # self.symbols_last_game = self.symbols
                 return False
             elif for_check == "OOO":
                 print("Here's is our winner, congratulations to O!")
                 self.winner = "O"
                 self.o_points += 1
+                # self.symbols_last_game = self.symbols
                 return False
         return True
 
     def check_draw(self):
         for_check = [key for key in self.symbols if self.symbols[key] == " "]
-        if for_check == []:
+        if not for_check:
             return True
         else:
             return False
@@ -129,7 +132,20 @@ class Game:
 
     def ai_step_very_easy(self):
         free_spot = [key for key in self.symbols if self.symbols[key] == " "]
-        self.ai_go = random.choice(free_spot)
+        for tup in self.winning_positions:
+            count = [value for value in tup if self.symbols[value] != f"{self.side}" and
+                     (self.symbols[value] == " ")]
+            check_for_ai = [value for value in tup if self.symbols[value] == f"{self.ai_side}"]
+            if len(count) == 1 and not check_for_ai:
+                self.ai_go = count[0]
+                break
+            else:
+                count = "long"
+
+        print(f"count: {count}")
+        if len(count) > 1:
+            self.ai_go = random.choice(free_spot)
+
         if free_spot:
             self.symbols[self.ai_go] = self.ai_side
 

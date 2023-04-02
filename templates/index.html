@@ -6,58 +6,134 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
- <div class="game">
-     <h1>Choose you side</h1>
-     <form action="" name="side" method="POST">
-         <label><input type="radio" name="radio" value="X" required>X</label>
-         <label><input type="radio" name="radio" value="O" required>O</label>
-         <label for="dific">Choose difficulty:</label>
-<select id="dific" name="dific">
-  <option value="very_easy">Very Easy</option>
-  <option value="very_hard">Very Hard</option>
-</select>
-         <button type="submit">Submit</button>
-     </form>
-     {% if session["side"] %}
-     <h3>Your side is: {{ session["side"] }}</h3>
-     {% else %}
-     <h3>Your side is: Not Chosen</h3>
-     {% endif %}
-     <table>
-         <tr>
-             <td><form name="but1" method="POST"><button type="submit" class="game-but" name="game_but11">{{ session["button11"] }}</button></form></td>
-             <td><form name="but2" method="POST"><button class="game-but" type="submit" name="game_but12">{{ session["button12"] }}</button></form></td>
-             <td><form name="but3" method="POST"><button class="game-but" type="submit" name="game_but13">{{ session["button13"] }}</button></form></td>
-         </tr>
-         <tr>
-             <td><form name="but4" method="POST"><button class="game-but" type="submit" name="game_but21">{{ session["button21"] }}</button></form></td>
-             <td><form name="but5" method="POST"><button class="game-but" type="submit" name="game_but22">{{ session["button22"] }}</button></form></td>
-             <td><form name="but6" method="POST"><button class="game-but" type="submit" name="game_but23">{{ session["button23"] }}</button></form></td>
-         </tr>
-         <tr>
-             <td><form name="but7" method="POST"><button class="game-but" type="submit" name="game_but31">{{ session["button31"] }}</button></form></td>
-             <td><form name="but8" method="POST"><button class="game-but" type="submit" name="game_but32">{{ session["button32"] }}</button></form></td>
-             <td><form name="but9" method="POST"><button class="game-but" type="submit" name="game_but33">{{ session["button33"] }}</button></form></td>
-         </tr>
-     </table>
+<div class="game">
+    <h1>Choose you side</h1>
+    <form action="" name="side" method="POST">
+        <label><input type="radio" name="radio" value="X" required>X</label>
+        <label><input type="radio" name="radio" value="O" required>O</label>
+        <label for="dific">Choose difficulty:</label>
+        <select id="dific" name="dific">
+            <option value="very_easy">Very Easy</option>
+            <option value="very_hard">Very Hard</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+    {% if session["side"] %}
+    <h3>Your side is: {{ session["side"] }}</h3>
+    {% else %}
+    <h3>Your side is: Not Chosen</h3>
+    {% endif %}
+    <table>
+        <tr>
+            <td>
+                <form name="but1" method="POST">
+                    <button type="submit" class="game-but" name="game_but11">{{ session["button11"] }}</button>
+                </form>
+            </td>
+            <td>
+                <form name="but2" method="POST">
+                    <button class="game-but" type="submit" name="game_but12">{{ session["button12"] }}</button>
+                </form>
+            </td>
+            <td>
+                <form name="but3" method="POST">
+                    <button class="game-but" type="submit" name="game_but13">{{ session["button13"] }}</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form name="but4" method="POST">
+                    <button class="game-but" type="submit" name="game_but21">{{ session["button21"] }}</button>
+                </form>
+            </td>
+            <td>
+                <form name="but5" method="POST">
+                    <button class="game-but" type="submit" name="game_but22">{{ session["button22"] }}</button>
+                </form>
+            </td>
+            <td>
+                <form name="but6" method="POST">
+                    <button class="game-but" type="submit" name="game_but23">{{ session["button23"] }}</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form name="but7" method="POST">
+                    <button class="game-but" type="submit" name="game_but31">{{ session["button31"] }}</button>
+                </form>
+            </td>
+            <td>
+                <form name="but8" method="POST">
+                    <button class="game-but" type="submit" name="game_but32">{{ session["button32"] }}</button>
+                </form>
+            </td>
+            <td>
+                <form name="but9" method="POST">
+                    <button class="game-but" type="submit" name="game_but33">{{ session["button33"] }}</button>
+                </form>
+            </td>
+        </tr>
+    </table>
 
-     <div class="pints">
-         <h3>X points: {{ session["x_points"] }}</h3><h3>O points: {{ session["o_points"] }}</h3>
-     </div>
+    {% if session["lastgame"] %}
+    <h2>Last Game</h2>
+    <table>
+        <tr>
+            <td>
+                <p>{{ session['lastgame'] }}</p>
+            </td>
+            <td>
+                {{ session['lastgame'][12] }}
+            </td>
+            <td>
+                {{ session['lastgame'][13] }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ session["lastgame"][21] }}
+            </td>
+            <td>
+                {{ session["lastgame"][22] }}
+            </td>
+            <td>
+                {{ session["lastgame"][23] }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ session["lastgame"][31] }}
+            </td>
+            <td>
+                {{ session["lastgame"][32] }}
+            </td>
+            <td>
+                {{ session["lastgame"][33] }}
+            </td>
+        </tr>
+    </table>
+    {% endif %}
 
-     <form name="restart" method="POST">
-         <button type="submit" name="restart">Restart</button>
-     </form>
+    <div class="pints">
+        <h3>X points: {{ session["x_points"] }}</h3>
+        <h3>O points: {{ session["o_points"] }}</h3>
+    </div>
 
-     {% with messages = get_flashed_messages() %}
-     {% if messages %}
-     <ul class=flashes>
-         {% for message in messages %}
-         <li>{{ message }}</li>
-         {% endfor %}
-     </ul>
-     {% endif %}
-     {% endwith %}
+    <form name="restart" method="POST">
+        <button type="submit" name="restart">Restart</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 
 
 </body>
