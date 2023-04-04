@@ -3,138 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <title>Tic Tac Toe</title>
+
+    {% if session["winner_pos"] %}
+    {% for num in session["winner_pos"] %}
+    <style>
+        #game_but{{num}} {
+            background-color: black;
+            color: white;
+        }
+
+    </style>
+    {% endfor %}
+    {% endif %}
+
+    <!--    bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <!--    google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400&display=swap"
+          rel="stylesheet">
+
+    <!--    styles-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-<div class="game">
-    <h1>Choose you side</h1>
-    <form action="" name="side" method="POST">
-        <label><input type="radio" name="radio" value="X" required>X</label>
-        <label><input type="radio" name="radio" value="O" required>O</label>
-        <label for="dific">Choose difficulty:</label>
-        <select id="dific" name="dific">
-            <option value="very_easy">Very Easy</option>
-            <option value="very_hard">Very Hard</option>
-        </select>
-        <button type="submit">Submit</button>
-    </form>
-    {% if session["side"] %}
-    <h3>Your side is: {{ session["side"] }}</h3>
-    {% else %}
-    <h3>Your side is: Not Chosen</h3>
-    {% endif %}
-    <table>
-        <tr>
-            <td>
-                <form name="but1" method="POST">
-                    <button type="submit" class="game-but" name="game_but11">{{ session["button11"] }}</button>
-                </form>
-            </td>
-            <td>
-                <form name="but2" method="POST">
-                    <button class="game-but" type="submit" name="game_but12">{{ session["button12"] }}</button>
-                </form>
-            </td>
-            <td>
-                <form name="but3" method="POST">
-                    <button class="game-but" type="submit" name="game_but13">{{ session["button13"] }}</button>
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <form name="but4" method="POST">
-                    <button class="game-but" type="submit" name="game_but21">{{ session["button21"] }}</button>
-                </form>
-            </td>
-            <td>
-                <form name="but5" method="POST">
-                    <button class="game-but" type="submit" name="game_but22">{{ session["button22"] }}</button>
-                </form>
-            </td>
-            <td>
-                <form name="but6" method="POST">
-                    <button class="game-but" type="submit" name="game_but23">{{ session["button23"] }}</button>
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <form name="but7" method="POST">
-                    <button class="game-but" type="submit" name="game_but31">{{ session["button31"] }}</button>
-                </form>
-            </td>
-            <td>
-                <form name="but8" method="POST">
-                    <button class="game-but" type="submit" name="game_but32">{{ session["button32"] }}</button>
-                </form>
-            </td>
-            <td>
-                <form name="but9" method="POST">
-                    <button class="game-but" type="submit" name="game_but33">{{ session["button33"] }}</button>
-                </form>
-            </td>
-        </tr>
-    </table>
 
-    {% if session["lastgame"] %}
-    <h2>Last Game</h2>
-    <table>
-        <tr>
-            <td>
-                <p>{{ session['lastgame'] }}</p>
-            </td>
-            <td>
-                {{ session['lastgame'][12] }}
-            </td>
-            <td>
-                {{ session['lastgame'][13] }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                {{ session["lastgame"][21] }}
-            </td>
-            <td>
-                {{ session["lastgame"][22] }}
-            </td>
-            <td>
-                {{ session["lastgame"][23] }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                {{ session["lastgame"][31] }}
-            </td>
-            <td>
-                {{ session["lastgame"][32] }}
-            </td>
-            <td>
-                {{ session["lastgame"][33] }}
-            </td>
-        </tr>
-    </table>
-    {% endif %}
-
-    <div class="pints">
-        <h3>X points: {{ session["x_points"] }}</h3>
-        <h3>O points: {{ session["o_points"] }}</h3>
+<section id="head">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6"></div>
+            <h1>Tik Tak Toe</h1>
+        </div>
     </div>
+</section>
 
-    <form name="restart" method="POST">
-        <button type="submit" name="restart">Restart</button>
-    </form>
+<section id="game">
+    <div class="row">
+        <div class="col-md-6 game-row-main">
+            {% if not session["side"] %}
+            <h2 class="ch-cust">Choose side and difficulty</h2>
+            <form action="" name="side" method="POST" class="ch-cust">
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class=flashes>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="radio" id="btnradio1" autocomplete="off" checked value="X">
+                    <label class="btn btn-outline-dark" for="btnradio1">X</label>
+
+                    <input type="radio" class="btn-check" name="radio" id="btnradio2" autocomplete="off" value="O">
+                    <label class="btn btn-outline-dark" for="btnradio2">O</label>
+                </div>
+
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="dific" id="btnradio3" autocomplete="off" checked value="very_easy">
+                    <label class="btn btn-outline-dark" for="btnradio3">Easy</label>
+
+                    <input type="radio" class="btn-check" name="dific" id="btnradio4" autocomplete="off" value="very_hard">
+                    <label class="btn btn-outline-dark" for="btnradio4">Hard</label>
+                </div>
+
+                <button type="submit" class="btn btn-dark">Submit</button>
+            </form>
+            {% endif %}
+
+            {% if session["side"] %}
+            <h3><em>Your side is:</em> <b>{{ session["side"] }}</b></h3>
+            {% endif %}
 
 
+            <!--            BUTTONS-->
+            {% if session["side"] %}
+            <div class="points">
+                <div class="row">
+                    <div class="col">
+                        <h3><em>X points:</em> <b>{{ session["x_points"] }}</b></h3>
+                    </div>
+                    <div class="col">
+                        <h3><em>O points:</em> <b>{{ session["o_points"] }}</b></h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 game">
+                    <form name="but1" method="POST" class="game-form">
+                        <div class="container">
+                            <div class="row">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button class="btn btn-outline-dark btn-custom" type="submit" name="game_but11"
+                                            id="game_but11">{{ session["button11"]
+                                        }}
+                                    </button>
+                                    <button class="btn btn-outline-dark btn-custom" type="submit" name="game_but12"
+                                            id="game_but12">{{ session["button12"]
+                                        }}
+                                    </button>
+                                    <button class="btn btn-outline-dark btn-custom" type="submit" name="game_but13"
+                                            id="game_but13">{{ session["button13"]
+                                        }}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button class="btn btn-outline-dark btn-custom" type="submit" name="game_but21"
+                                            id="game_but21">{{ session["button21"]
+                                        }}
+                                    </button>
+                                    <button class="btn btn-outline-dark btn-custom" type="submit" name="game_but22"
+                                            id="game_but22">{{ session["button22"]
+                                        }}
+                                    </button>
+                                    <button class="btn btn-outline-dark btn-custom" type="submit" name="game_but23"
+                                            id="game_but23">{{ session["button23"]
+                                        }}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button class="btn btn-outline-dark btn-custom" type="submit" name="game_but31"
+                                            id="game_but31">{{ session["button31"]
+                                        }}
+                                    </button>
+                                    <button class="btn btn-outline-dark btn-custom" type="submit" name="game_but32"
+                                            id="game_but32">{{ session["button32"]
+                                        }}
+                                    </button>
+                                    <button class="btn btn-outline-dark btn-custom" type="submit" name="game_but33"
+                                            id="game_but33">{{ session["button33"]
+                                        }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col restart">
+                    <form name="restart" method="POST">
+                        <button type="submit" name="restart" class="btn btn-dark low-but">Restart</button>
+                    </form>
+                </div>
+
+
+                {% if game %}
+                <div class="col next">
+                    <form name="next" method="POST">
+                        <button type="submit" name="next" class="btn btn-dark low-but">Next</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-danger" role="alert">
+                <ul class=flashes>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</section>
+
+
+<!--    bootstrap-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
 </body>
 </html>

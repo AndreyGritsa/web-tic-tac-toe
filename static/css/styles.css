@@ -1,4 +1,66 @@
-.game-but {
-    width: 20px;
-    height: 20px;
+h1 {
+    font-family: 'Kanit', sans-serif;
+    weight: 900;
 }
+
+.btn-custom {
+    width: 78px !important;
+    height: 78px !important;
+    border-width: 2px;
+    font-size: 1.7rem;
+}
+
+.low-but {
+    min-width: 80px;
+}
+
+body {
+    background-image: linear-gradient(to bottom right, #FFA559, #FF6000);
+    background-attachment: fixed;
+    font-family: 'Kanit', sans-serif;
+    color: #454545;
+}
+
+/* Head section  */
+#head {
+    margin-top: 7%;
+}
+
+/* Game section */
+
+#game {
+    padding-top: 2%;
+}
+
+.game-row-main {
+    margin: auto;
+    text-align: center;
+}
+
+.game {
+    margin: auto;
+}
+
+.restart {
+    padding-left: 135px;
+    padding-top: 3%;
+}
+
+.next {
+    padding-right: 135px;
+    padding-top: 3%;
+}
+
+.points {
+    padding-bottom: 3%;
+}
+
+.btn-outline-dark {
+    background-color: #FFE6C7;
+}
+
+.ch-cust {
+   text-align: left;
+    padding-left: 100px;
+}
+

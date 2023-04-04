@@ -15,7 +15,6 @@ class Game:
             32: " ",
             33: " ",
         }
-        self.symbols_last_game = dict
         self.winning_positions = (
             (11, 12, 13),
             (21, 22, 23),
@@ -33,6 +32,7 @@ class Game:
         self.draw = False
         self.dif = dif
         self.winner = ""
+        self.winner_pos = False
         self.x_points = 0
         self.o_points = 0
 
@@ -64,7 +64,6 @@ class Game:
                 self.game_situation_update()
                 self.is_game = False
                 self.draw = True
-                # self.symbols_last_game = self.symbols
                 return False
             else:
                 if self.dif == "very_easy":
@@ -84,13 +83,13 @@ class Game:
                 print("Here's is our winner, congratulations to X!")
                 self.winner = "X"
                 self.x_points += 1
-                # self.symbols_last_game = self.symbols
+                self.winner_pos = tup
                 return False
             elif for_check == "OOO":
                 print("Here's is our winner, congratulations to O!")
                 self.winner = "O"
                 self.o_points += 1
-                # self.symbols_last_game = self.symbols
+                self.winner_pos = tup
                 return False
         return True
 
@@ -100,33 +99,6 @@ class Game:
             return True
         else:
             return False
-
-    # logic for choosing position
-    def location(self):
-        line = input("Choose line: ")
-        if line in "123" and len(line) == 1: # line should be between 1 and 3
-            is_not_correct = True
-            while is_not_correct: # position should be between 1 and 3
-                position = input("Choose position: ")
-                if position in "123" and len(position) == 1:
-                    is_not_correct = False
-                else:
-                    print("Position should be between 1 and 3, try again!")
-
-            loc = int(f"{line}{position}")
-
-            # check if position is already occupied
-            if self.symbols[loc] != " ":
-                loc = " "
-                print("Place is occupied, try again!")
-                self.location()
-
-            print(f"Side: {self.side}, location: {loc}")
-            print(f"Location where is should place the side: {loc} and the type is: {type(loc)}")
-            self.symbols[loc] = self.side
-        else:
-            print("Line should be from 1 to 3, try again.")
-            self.location()
 
     # -------- AI LOGIC --------
 

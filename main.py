@@ -1,26 +1,21 @@
 from flask import Flask, render_template, request, session, flash
-from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, IntegerField
-
+import os
 from game import Game
 
 game = False
-lastgame = False
 app = Flask(__name__)
-app.secret_key = "asdaqwe123asd1239ua0s8hdub298baosubd 19280"
+app.secret_key = os.environ.get("SECRET")
 
 
 def clean_ses(obj):
     for key in list(session.keys()):
-        if "button" in key:
+        if "button" in key or "winner_pos" in key:
             session.pop(key)
 
-    obj.symbols_last_game = obj.symbols
-    session["lastgame"] = obj.symbols_last_game
     for key in obj.symbols:
-        print(obj.symbols_last_game[key])
         obj.symbols[key] = " "
     obj.is_game = True
+    obj.winner_pos = False
 
 
 def update_score(obj):
@@ -29,23 +24,17 @@ def update_score(obj):
 
 
 def button_logic(num, obj):
-    if f"game_but{num}" in request.form and f"button{num}" not in session and "side" in session:
+    if f"game_but{num}" in request.form and f"button{num}" not in session and "side" in session and obj.is_game:
         session[f"button{num}"] = session["side"]
         obj.symbols[num] = session["side"]
         obj.run()
+        session[f"button{obj.ai_go}"] = obj.ai_side
         if not obj.is_game and obj.draw:
             update_score(obj)
-            clean_ses(obj)
-            # session["lastgame"] = obj.symbols_last_game
-            print(f"session lastgame: {session['lastgame']}")
-
+            session["winner_pos"] = obj.winner_pos
         elif not obj.is_game:
             update_score(obj)
-            clean_ses(obj)
-            # session["lastgame"] = obj.symbols_last_game
-            print(f"session lastgame: {session['lastgame']}")
-        else:
-            session[f"button{obj.ai_go}"] = obj.ai_side
+            session["winner_pos"] = obj.winner_pos
     elif f"game_but{num}" in request.form and f"button{num}" not in session and "side" not in session:
         flash("You haven't chosen the side.")
 
@@ -62,44 +51,16 @@ def index():
         for key in list(session.keys()):
             session.pop(key)
 
+    if "next" in request.form:
+        clean_ses(game)
+
     if game:
+        for button in game.symbols:
+            button_logic(button, game)
 
-        # buton 1
-        lastgame = button_logic(11, game)
-
-        # buton 2
-        lastgame = button_logic(12, game)
-
-
-        # buton 3
-        lastgame = button_logic(13, game)
-
-
-        # buton 4
-        lastgame = button_logic(21, game)
-
-
-        # buton 5
-        lastgame = button_logic(22, game)
-
-
-        # buton 6
-        lastgame = button_logic(23, game)
-
-
-        # buton 7
-        lastgame = button_logic(31, game)
-
-
-        # buton 8
-        lastgame = button_logic(32, game)
-
-
-        # buton 9
-        lastgame = button_logic(33, game)
     print(request.form)
     print(session)
-    return render_template("index.html")
+    return render_template("index.html", game=game)
 
 
 if __name__ == "__main__":
