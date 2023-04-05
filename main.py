@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET")
 
 
+# we need to clean some stuff after win, draw
 def clean_ses(obj):
     for key in list(session.keys()):
         if "button" in key or "winner_pos" in key:
@@ -23,6 +24,7 @@ def update_score(obj):
     session["o_points"] = obj.o_points
 
 
+# logic for each game cell
 def button_logic(num, obj):
     if f"game_but{num}" in request.form and f"button{num}" not in session and "side" in session and obj.is_game:
         session[f"button{num}"] = session["side"]

@@ -36,6 +36,7 @@ class Game:
         self.x_points = 0
         self.o_points = 0
 
+    # print out position
     def game_situation_update(self):
         game_sit = f"""
                     {self.symbols[11]}|{self.symbols[12]}|{self.symbols[13]}
@@ -93,6 +94,7 @@ class Game:
                 return False
         return True
 
+    # check if draw
     def check_draw(self):
         for_check = [key for key in self.symbols if self.symbols[key] == " "]
         if not for_check:
